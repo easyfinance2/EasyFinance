@@ -348,7 +348,7 @@ abstract contract Ownable is Context {
   string private _symbol;
   string private _name;
   /*
-  fees are meant to avoid inflation, and are limited to 0.0005% and can not be changed
+  fees are meant to avoid inflation, and are limited to 0.005% and can not be changed
   */
   uint256 private _taxFee = 5;
     /*
@@ -427,11 +427,11 @@ abstract contract Ownable is Context {
     return true;
   }
   /**
-   * @dev calculates tax fees 0.0005% and returns the tax fee amount.
+   * @dev calculates tax fees 0.005% and returns the tax fee amount.
    */
   function calculateTaxFee(uint256 _amount) private view returns (uint256) {
         return _amount.mul(_taxFee).div(
-            1000000
+            100000
         );
   }
   /**
