@@ -336,7 +336,7 @@ abstract contract Ownable is Context {
   }
 }
 
- contract BEP20Token is Context, IBEP20, Ownable {
+ contract EasyFinance is Context, IBEP20, Ownable {
   using SafeMath for uint256;
 
   mapping (address => uint256) private _balances;
@@ -355,7 +355,7 @@ abstract contract Ownable is Context {
   fees can be completly deactivated by setting _noFees to false
   */
   bool private _noFees;
-
+  
   mapping (address => bool) private _isExcluded;
   mapping (address => bool) private _isExcludedFromAllFees;
 
@@ -363,7 +363,7 @@ abstract contract Ownable is Context {
   constructor() public {
     _name = "Easy Finance";
     _symbol = "EF";
-    _decimals = 19;
+    _decimals = 18;
     _totalSupply = 50000000000000000000000000;
     _noFees=false;
     _balances[msg.sender] = _totalSupply;
@@ -454,7 +454,7 @@ abstract contract Ownable is Context {
     }
      /**
    * @dev excludes address from paying the transfer fees
-   *
+   * 
    * Requirements:
    *
    * -  the other party(sender or receipient) must be excluded from fees too
@@ -465,7 +465,7 @@ abstract contract Ownable is Context {
    /**
    * All addresses are included in fees per default.
    * @dev reinclude an excluded address in paying the transfer fees
-   *
+   * 
    */
   function includeInFee(address account) public onlyOwner {
         _isExcluded[account] = false;
@@ -473,7 +473,7 @@ abstract contract Ownable is Context {
    /**
    * All addresses are included in fees per default.
    * @dev excludes address from paying the transfer fees on sending and receiving
-   *
+   * 
    */
   function excludeFromAllFees(address account) public onlyOwner {
         _isExcludedFromAllFees[account] = true;
@@ -481,8 +481,8 @@ abstract contract Ownable is Context {
    /**
    * All addresses are included in fees per default.
    * @dev reinclude and excluded address in paying the transfer fees on sending and receiving
-   *
-   */
+   * 
+   */    
   function includeInAllFees(address account) public onlyOwner {
         _isExcludedFromAllFees[account] = false;
     }
@@ -493,10 +493,10 @@ abstract contract Ownable is Context {
    * This is internal function is equivalent to {transfer}, and can be used to
    * e.g. implement automatic token fees, slashing mechanisms, etc.
    *
-   * @dev checks if fees must be applied on the transfer, in case it
-   * must be applied, a tax fee of 0.0005% is applied, the amount of the tax
+   * @dev checks if fees must be applied on the transfer, in case it 
+   * must be applied, a tax fee of 0.0005% is applied, the amount of the tax 
    * fee is sent back to the contract address.
-   *
+   * 
    * Emits a {Transfer} event.
    *
    * Requirements:
@@ -606,7 +606,7 @@ abstract contract Ownable is Context {
    * Requirements
    *
    * - `msg.sender` must be the token owner
-
+ 
   function mint(uint256 amount) public onlyOwner returns (bool) {
     _mint(_msgSender(), amount);
     return true;
@@ -623,24 +623,6 @@ abstract contract Ownable is Context {
   function burn(uint256 amount) public onlyOwner returns (bool) {
     _burn(_msgSender(), amount);
     return true;
-  }
-
-
-  /** @dev Creates `amount` tokens and assigns them to `account`, increasing
-   * the total supply.
-   *
-   * Emits a {Transfer} event with `from` set to the zero address.
-   *
-   * Requirements
-   *
-   * - `to` cannot be the zero address.
-   */
-  function _mint(address account, uint256 amount) internal {
-    require(account != address(0), "BEP20: mint to the zero address");
-
-    _totalSupply = _totalSupply.add(amount);
-    _balances[account] = _balances[account].add(amount);
-    emit Transfer(address(0), account, amount);
   }
 
   /**
